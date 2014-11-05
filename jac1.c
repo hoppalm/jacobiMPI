@@ -83,6 +83,22 @@ int main(int argc, char **argv) {
         printf("Sequential process complete, time: %f\n", time);
         goto EXIT;
     }
+    else {
+        int myleft=myid-1;
+        int myright=myid+1;
+        if(myleft == -1) myleft=MPI_PROC_NULL;
+        if(myright >= numnodes)myright=MPI_PROC_NULL;
+
+        if (id == 0) {
+            printf("first processer\n");
+        }
+        else if(id%2 == 0){
+            printf("even processer\n");
+        }
+        else{
+            printf("odd processer\n");
+        }
+    }
     
     
 EXIT:
