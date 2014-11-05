@@ -55,6 +55,12 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     
+    /* make sure everyone is active */
+    MPI_Barrier(MPI_COMM_WORLD);
+    
+    
+    printf("%d", p);
+    printf("%d", id);
     t = 0;
     if(p==1){
         // Initialization
@@ -74,7 +80,7 @@ int main(int argc, char **argv) {
         endwtime = MPI_Wtime();
         time = endwtime-startwtime;
         printf("Sequential process complete, time: %f\n", time);
-        goto EXIT;     
+        goto EXIT;
     }
     
     
