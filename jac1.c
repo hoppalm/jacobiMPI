@@ -90,13 +90,19 @@ int main(int argc, char **argv) {
         if(myright >= p)myright=MPI_PROC_NULL;
 
         if (id == 0) {
-            printf("first processer\n");
+            printf("first processor\n");
+            printf("left processor: %d\n", myleft);
+            printf("right processor: %d\n", myright);
         }
         else if(id%2 == 0){
-            printf("even processer\n");
+            printf("even processor\n");
+            printf("left processor: %d\n", myleft);
+            printf("right processor: %d\n", myright);
         }
         else{
-            printf("odd processer\n");
+            printf("odd processor\n");
+            printf("left processor: %d\n", myleft);
+            printf("right processor: %d\n", myright);
         }
     }
     
