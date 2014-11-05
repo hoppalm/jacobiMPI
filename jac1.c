@@ -84,10 +84,10 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     else {
-        int myleft=myid-1;
-        int myright=myid+1;
+        int myleft=id-1;
+        int myright=id+1;
         if(myleft == -1) myleft=MPI_PROC_NULL;
-        if(myright >= numnodes)myright=MPI_PROC_NULL;
+        if(myright >= p)myright=MPI_PROC_NULL;
 
         if (id == 0) {
             printf("first processer\n");
