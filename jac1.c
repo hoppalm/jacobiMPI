@@ -105,9 +105,7 @@ int main(int argc, char **argv) {
             
             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
             
-            printf("first processor\n");
-            printf("left processor: %d\n", myleft);
-            printf("right processor: %d\n", myright);
+            printf("first processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
         else if(id%2 == 0){
             leftSendingBuffer[0] = id;
@@ -120,10 +118,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
              
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            
-            printf("even processor\n");
-            printf("left processor: %d\n", myleft);
-            printf("right processor: %d\n", myright);
+            printf("even processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
         else{
             leftSendingBuffer[0] = id;
@@ -136,10 +131,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
              
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            
-            printf("odd processor\n");
-            printf("left processor: %d\n", myleft);
-            printf("right processor: %d\n", myright);
+            printf("odd processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
     }
     
