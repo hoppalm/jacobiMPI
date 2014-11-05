@@ -61,6 +61,7 @@ int main(int argc, char **argv) {
     
     printf("number of processers %d\n", p);
     printf("current id %d\n", id);
+    printf("block_size %d\n", block_size);
     t = 0;
     if(p==1){
         // Initialization
