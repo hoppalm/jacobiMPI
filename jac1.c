@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
         if (id == 0) cur[k] = f(0,n);
         if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         
-        exchangeGhostElements(p, id, prev, block_size, k)
+        exchangeGhostElements(p, id, prev, block_size, k);
     }
     
     
