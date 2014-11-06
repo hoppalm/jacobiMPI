@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
         
         //printf checking something DEBUG DELETE LATER
         printf("Ending\n");
-        for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+        for(i=k;i<block_size-k;i++) printf("%f ",prev[i]);
         printf("\n");
     }
     
