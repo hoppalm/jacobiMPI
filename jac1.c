@@ -162,6 +162,14 @@ int main(int argc, char **argv) {
             }
             temp = prev; prev = cur;  cur  = temp; t++;
         }
+        
+        if(v && vp == id ){
+            for(i=k;i<block_size-k;i++){
+               printf("%f ",prev[i]); 
+            }
+            printf("\n");
+        }
+        
         /*
          printf("after swap\n");
          //printf checking something DEBUG DELETE LATER
@@ -169,9 +177,8 @@ int main(int argc, char **argv) {
          printf("\n");*/
         
         //printf checking something DEBUG DELETE LATER
-        printf("Ending\n");
-        for(i=k;i<block_size-k;i++) printf("%f ",prev[i]);
-        printf("\n");
+
+        
     }
     
     
