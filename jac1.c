@@ -166,7 +166,7 @@ int main(int argc, char **argv) {
             
             printf("%d int recieved from right", buffer[0]);
             
-            printf("odd processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
+            printf("odd processor left processor: %d right processor: %d\n", myleft, myright);
         }
     }
     
