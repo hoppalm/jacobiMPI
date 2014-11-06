@@ -48,6 +48,9 @@ int main(int argc, char **argv) {
     prev  = (double *) malloc( sizeof(double) * block_size);
     cur   = (double *) malloc( sizeof(double) * block_size);
     
+    int lastGhostIndex = block_size-k;
+    int lastElementIndex = block_size-(2*k);
+    
     if ( prev == NULL || cur == NULL ) {
         printf("[ERROR] : Failed to allocate memory.\n");
         goto EXIT;
@@ -94,8 +97,8 @@ int main(int argc, char **argv) {
             //swapping ghost cells
             switch(id){
                 case 0:
-                    MPI_Send(prev+(block_size-(2*k)), k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
-                    MPI_Recv(prev+(block_size-k), k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                    MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                    MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
                     for (j = k-1; j >= 0 && t < m; j--){
                         for ( i=k+1; i < block_size-k+j; i++ ) {
                             cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
@@ -117,11 +120,11 @@ int main(int argc, char **argv) {
                     else {
                         MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
                         
-                        MPI_Send(prev+(block_size-(2*k)), k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
                         
                         MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
                         
-                        MPI_Recv(prev+(block_size-k), k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
                         
                         for (j = k-1; j >= 0 && t < m; j--){
                             for ( i=k-j; i < block_size-k+j; i++ ) {
@@ -144,7 +147,7 @@ int main(int argc, char **argv) {
         
         endwtime = MPI_Wtime();
         time = endwtime-startwtime;
-        if(p == 0 ){
+        if(v && vp == id ){
             printf("MPI process complete, time: %f\n", time);
         }
         goto EXIT;
