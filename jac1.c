@@ -140,13 +140,18 @@ int main(int argc, char **argv) {
         
         if (id == 0) cur[k] = f(0,n);
         if (id == p-1) cur[block_size-k-1] = f(n-1,n);
-        
-        exchangeGhostElements(p, id, prev, block_size, k);
-        
+        while (t < m) {
+            exchangeGhostElements(p, id, prev, block_size, k);
+            for ( i=0; i < block_size; i++ ) {
+                cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+            }
+            temp = prev; prev = cur;  cur  = temp; t++;
+        }
+        /*
         printf("after swap\n");
         //printf checking something DEBUG DELETE LATER
         for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-        printf("\n");
+        printf("\n");*/
     }
     
     
