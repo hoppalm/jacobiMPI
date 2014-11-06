@@ -91,10 +91,12 @@ int main(int argc, char **argv) {
 
         if (id == 0) {
             rightSendingBuffer[0] = id;
+        
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 1, MPI_COMM_WORLD);
             
-            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 1, MPI_COMM_WORLD, &status);
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 2, MPI_COMM_WORLD, &status);
             
-            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 2, MPI_COMM_WORLD);
+
             
             //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
             
