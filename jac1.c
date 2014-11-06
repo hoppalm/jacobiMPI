@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
         endwtime = MPI_Wtime();
         time = endwtime-startwtime;
         if(v && vp == id ){
-            printf("MPI process complete, time: %f\n", time);
+            
         }
         goto EXIT;
     }
@@ -154,5 +154,6 @@ int main(int argc, char **argv) {
     
 EXIT:
     MPI_Finalize();
+    printf("MPI process complete, time: %f\n", time);
     return 0;
 }
