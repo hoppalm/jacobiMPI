@@ -134,6 +134,7 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
+        printf("Before swap\n");
         for(i=0;i<block_size;i++) printf("%f ",prev[i]);
         printf("\n");
         
@@ -142,6 +143,7 @@ int main(int argc, char **argv) {
         
         exchangeGhostElements(p, id, prev, block_size, k);
         
+        printf("after swap\n");
         //printf checking something DEBUG DELETE LATER
         for(i=0;i<block_size;i++) printf("%f ",prev[i]);
         printf("\n");
