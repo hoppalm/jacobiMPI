@@ -59,9 +59,7 @@ int main(int argc, char **argv) {
     MPI_Barrier(MPI_COMM_WORLD);
     
     
-    printf("number of processers %d\n", p);
-    printf("current id %d\n", id);
-    printf("block_size %d\n", block_size);
+    printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\n", p,id,block_size);
     t = 0;
     if(p==1){
         // Initialization
