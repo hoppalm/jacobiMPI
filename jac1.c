@@ -18,6 +18,41 @@ double f(int i, int n){
  }
  */
 
+void exchangeGhostElements(int p, int id, double *prev, int block_size, int k){
+    
+    MPI_Status status;
+    
+    int lastElementIndex = block_size-k-1;
+    
+    
+    if (id == 0) {
+        
+        //MPI_Send(prev+k+, 1, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
+        
+        //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, &status);
+        
+    }
+    else if(id == p-1){
+        
+        //MPI_Send((double *)leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
+        
+        //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
+        
+        //printf("%d int recieved from left", *buffer[0]);
+        
+    }
+    
+    else{
+        
+        //MPI_Recv(buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
+        
+        //MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
+        
+        //MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
+        
+        //MPI_Recv(buffer, 1, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
+    }
+}
 
 int main(int argc, char **argv) {
     int        id, p, i, j, k, n, t, m, v, vp;
@@ -88,18 +123,6 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     else {
-        double leftSendingBuffer[k];
-        double rightSendingBuffer[k];
-        double buffer[k];
-        
-        //delete
-        /*printf("Process: %d\n", id);
-        for(i = (id*(n/p)); i < (id*(n/p))+block_size-2; i++) {
-            prev[i-(id*(n/p))] = f(i,n);
-            printf("%f ", prev[i-(id*(n/p))]);
-        } printf("\n");
-        */
-        
         for (i = 0;i<block_size; i++){
             prev[0] = 0;
         }
@@ -112,58 +135,11 @@ int main(int argc, char **argv) {
         //printf checking something DEBUG DELETE LATER
         for(i=k;i<block_size;i++) printf("%f ",prev[i]);
         printf("\n");
-
         
+        if (id == 0) cur[k] = f(0,n);
+        if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         
-        if (id == 0) {
-            rightSendingBuffer[0] = id;
-            
-            //MPI_Send((double *)rightSendingBuffer, 1, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
-            
-            //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, &status);
-            
-            //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
-            
-            /*MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            //printf("%d int recieved from right", *buffer[0]);
-            
-            printf("first processor left processor: %d right processor: %d\n", id-1, id+1);
-        }
-        else if(id == p-1){
-            leftSendingBuffer[0] = id;
-            
-            //MPI_Send((double *)leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
-            
-            //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
-            
-            //printf("%d int recieved from left", *buffer[0]);
-            
-            printf("last  processor left processor: %d right processor: %d\n", id-1, id+1);
-        }
-        
-        else{
-            leftSendingBuffer[0] = id;
-            rightSendingBuffer[0] = id;
-            
-            //MPI_Recv(buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
-            
-            //MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
-            
-            //printf("%d int recieved from left", buffer[0]);
-            
-            //MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
-            
-            //MPI_Recv(buffer, 1, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
-            
-            
-            //printf("%d int recieved from right", buffer[0]);
-            
-            printf("left processor: %d right processor: %d\n", id-1, id+1);
-        }
+        exchangeGhostElements(p, id, prev, block_size, k)
     }
     
     
