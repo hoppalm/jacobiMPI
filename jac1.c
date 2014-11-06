@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
         printf("[ERROR] : Failed to allocate memory.\n");
         goto EXIT;
     }
-        
+    
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
     
@@ -64,6 +64,11 @@ int main(int argc, char **argv) {
         // Initialization
         startwtime = MPI_Wtime();
         for(i=0;i<n;i++)  prev[i] = f(i,n);
+        
+        //printf checking something DEBUG DELETE LATER
+        for(i=0;i<n;i++) printf("%f ",prev[i]);
+        printf("\n");
+        
         cur[0] = f(0,n); cur[n-1] = f(n-1,n);
         while (t < m) {
             for ( i=1 ; i < n-1 ; i++ ) {
@@ -81,12 +86,9 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     else {
-        int myleft=id-1;
-        int myright=id+1;
         double leftSendingBuffer[k];
         double rightSendingBuffer[k];
         double buffer[k];
-        leftSendingBuffer[0] = id*2;
         
         if (id == 0) {
             rightSendingBuffer[0] = id;
@@ -102,7 +104,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
              
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            printf("%d int recieved from right", *buffer[0]);
+            //printf("%d int recieved from right", *buffer[0]);
             
             printf("first processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -113,7 +115,7 @@ int main(int argc, char **argv) {
             
             MPI_Recv((double *)buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
             
-            printf("%d int recieved from left", *buffer[0]);
+            //printf("%d int recieved from left", *buffer[0]);
             
             printf("last  processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -126,14 +128,14 @@ int main(int argc, char **argv) {
             
             MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
             
-            printf("%d int recieved from left", buffer[0]);
+            //printf("%d int recieved from left", buffer[0]);
             
             MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
             
             
-            printf("%d int recieved from right", buffer[0]);
+            //printf("%d int recieved from right", buffer[0]);
             
             printf("left processor: %d right processor: %d\n", myleft, myright);
         }
