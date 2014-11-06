@@ -97,8 +97,8 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
-        for(i=0;i<block_size;i++); //printf("%f ",prev[i]);
-        //printf("\n");
+        for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+        printf("\n");
 
         
         if (id == 0) {
