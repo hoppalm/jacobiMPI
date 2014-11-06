@@ -102,8 +102,7 @@ int main(int argc, char **argv) {
         //printf checking something DEBUG DELETE LATER
         for(i=0;i<n;i++) printf("%f ",prev[i]);
         printf("\n");
-        
-        cur[0] = f(0,n); cur[n-1] = f(n-1,n);
+        cur[k] = f(0,n); cur[n-1] = f(n-1,n);
         
         //printf checking something DEBUG DELETE LATER
         printf("%f %f\n",cur[0],cur[n-1]);
@@ -147,7 +146,7 @@ int main(int argc, char **argv) {
             //printf checking something DEBUG DELETE LATER
             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
             printf("\n");*/
-            for ( i=k; i < block_size-k; i++ ) {
+            for ( i=k+1; i < block_size-k; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
             }
             temp = prev; prev = cur;  cur  = temp; t++;
