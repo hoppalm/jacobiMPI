@@ -91,13 +91,13 @@ int main(int argc, char **argv) {
         
         //initialization
         for(i=0;i<n/p;i++)  {
-            printf("setting %d in n\n", i+(n/p));
+            printf("setting %d in n\n", i+(n/p*id));
             prev[i+k] = f(i+(n/p),n);
             
         }
         
         //printf checking something DEBUG DELETE LATER
-        for(i=0;i<block_size;i++) //printf("%f ",prev[i]);
+        for(i=0;i<block_size;i++); //printf("%f ",prev[i]);
         //printf("\n");
 
         
