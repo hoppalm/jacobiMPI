@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
             //printf checking something DEBUG DELETE LATER
             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
             printf("\n");*/
-            for ( i=1; i < block_size; i++ ) {
+            for ( i=1; i < block_size-1; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
             }
             temp = prev; prev = cur;  cur  = temp; t++;
