@@ -139,26 +139,33 @@ int main(int argc, char **argv) {
         if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         while (t < m) {
             exchangeGhostElements(p, id, prev, block_size, k);
-            if (id == 0)
-                for ( i=k+1; i < block_size-k; i++ ) {
-                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+            for (j = k-1; j >= 0; j--){
+                if (id == 0){
+                    for ( i=k+1; i < block_size-k+j; i++ ) {
+                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                    }
                 }
-            else if (id == p-1){
-                for ( i=k; i < block_size-k-1; i++ ) {
-                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                else if (id == p-1){
+                    for ( i=k-j; i < block_size-k-1; i++ ) {
+                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                    }
+                }
+                else {
+                    for ( i=k-j; i < block_size-k+j; i++ ) {
+                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                    }
+                }
+                temp = prev; prev = cur;  cur  = temp; t++;
+                if (t >= m){
+                    break;
                 }
             }
-            else {
-                for ( i=k; i < block_size-k; i++ ) {
-                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
-                }
-            }
-            temp = prev; prev = cur;  cur  = temp; t++;
+            
         }
         
         if(v && vp == id ){
             for(i=k;i<block_size-k;i++){
-               printf("%f ",prev[i]);
+                printf("%f ",prev[i]);
             }
             printf("\n");
         }
@@ -170,7 +177,7 @@ int main(int argc, char **argv) {
          printf("\n");*/
         
         //printf checking something DEBUG DELETE LATER
-
+        
         
     }
     
