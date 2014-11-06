@@ -68,7 +68,6 @@ int main(int argc, char **argv) {
         for(i=0;i<n;i++) printf("%f ",prev[i]);
         printf("\n");
         
-        if (id == 0)
         cur[0] = f(0,n); cur[n-1] = f(n-1,n);
         
         //printf checking something DEBUG DELETE LATER
