@@ -55,8 +55,7 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     
-    /* make sure everyone is active */
-    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
     
     printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\n", p,id,block_size);
@@ -103,7 +102,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
              
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            printf("%d int recieved from right", buffer[0]);
+           // printf("%d int recieved from right", buffer[0]);
             
             printf("first processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -114,7 +113,7 @@ int main(int argc, char **argv) {
             
             MPI_Recv((double *)buffer, 1, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
             
-            printf("%d int recieved from left", buffer[0]);
+           // printf("%d int recieved from left", buffer[0]);
             
             printf("last  processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -125,16 +124,19 @@ int main(int argc, char **argv) {
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
             
-            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myright, id, MPI_COMM_WORLD);
             
-            printf("%d int recieved from left", buffer[0]);
+            //printf("%d int recieved from left", buffer[0]);
             
             MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
             
             
-            printf("%d int recieved from right", buffer[0]);
+            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myright, id, MPI_COMM_WORLD);
+
+            
+            
+            //printf("%d int recieved from right", buffer[0]);
             
             printf("left processor: %d right processor: %d\n", myleft, myright);
         }
