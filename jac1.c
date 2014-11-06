@@ -12,48 +12,6 @@ double f(int i, int n){
     else return n-i-1;
 }
 
-/*
- double f(int i, int n){
- return i;
- }
- */
-
-void exchangeGhostElements(int p, int id, double *prev, int block_size, int k){
-    
-    MPI_Status status;
-    
-    int lastGhostIndex = block_size-k;
-    int lastElementIndex = block_size-(2*k);
-    
-    
-    if (id == 0) {
-        
-        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
-        
-        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, &status);
-        
-    }
-    else if(id == p-1){
-        
-        MPI_Send(prev+k, k, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
-        
-        MPI_Recv(prev, k, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
-        
-        
-    }
-    
-    else{
-        
-        MPI_Recv(prev, k, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
-        
-        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
-        
-        MPI_Send(prev+k, k, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
-        
-        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
-    }
-}
-
 int main(int argc, char **argv) {
     int        id, p, i, j, k, n, t, m, v, vp;
     double     startwtime, endwtime;
@@ -90,22 +48,21 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     
+    int lastGhostIndex = block_size-k;
+    int lastElementIndex = block_size-(2*k);
+    int myleft = id - 1;
+    int myright = id + 1;
+    
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
-    //printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\tsetting %d in each block\n", p,id,block_size,n/p);
     t = 0;
     if(p==1){
         // Initialization
         startwtime = MPI_Wtime();
         for(i=0;i<n;i++)  prev[i] = f(i,n);
         
-        //printf checking something DEBUG DELETE LATER
-        for(i=0;i<n;i++) printf("%f ",prev[i]);
-        printf("\n");
         cur[k] = f(0,n); cur[n-1] = f(n-1,n);
         
-        //printf checking something DEBUG DELETE LATER
-        printf("%f %f\n",cur[0],cur[n-1]);
         while (t < m) {
             for ( i=1 ; i < n-1 ; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
@@ -123,24 +80,38 @@ int main(int argc, char **argv) {
     }
     else {
         startwtime = MPI_Wtime();
-        for (i = 0;i<block_size; i++){
-            prev[i] = 0;
-        }
         
         //initialization
         for(i=0;i<n/p;i++)  {
-            //printf("setting %d in n\n", i+(n/p*id));
             prev[i+k] = f(i+(n/p*id),n);
         }
         
-        //printf checking something DEBUG DELETE LATER
+        cur[k] = f(0,n);
+        cur[block_size-k-1] = f(n-1,n);
         
-        
-        if (id == 0) cur[k] = f(0,n);
-        if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         while (t < m) {
-            exchangeGhostElements(p, id, prev, block_size, k);
-            for (j = k-1; j >= 0; j--){
+            
+            //swapping ghost cells
+            if (id == 0) {
+                MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+            }
+            else if(id == p-1){
+                MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
+                MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
+            }
+            
+            else{
+                MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
+                
+                MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                
+                MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
+                
+                MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+            }
+            
+            for (j = k-1; j >= 0 && t < m; j--){
                 if (id == 0){
                     for ( i=k+1; i < block_size-k+j; i++ ) {
                         cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
@@ -157,9 +128,6 @@ int main(int argc, char **argv) {
                     }
                 }
                 temp = prev; prev = cur;  cur  = temp; t++;
-                if (t >= m){
-                    break;
-                }
             }
             
         }
@@ -171,16 +139,9 @@ int main(int argc, char **argv) {
             printf("\n");
         }
         
-        /*
-         printf("after swap\n");
-         //printf checking something DEBUG DELETE LATER
-         for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-         printf("\n");*/
-        
-        //printf checking something DEBUG DELETE LATER
         endwtime = MPI_Wtime();
         time = endwtime-startwtime;
-        printf("Sequential process complete, time: %f\n", time);
+        //printf("Sequential process complete, time: %f\n", time);
         goto EXIT;
     }
     
