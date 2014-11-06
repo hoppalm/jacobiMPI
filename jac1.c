@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
     
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
-    printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\tsetting %d in each block\n", p,id,block_size,n/p);
+    //printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\tsetting %d in each block\n", p,id,block_size,n/p);
     t = 0;
     if(p==1){
         // Initialization
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
         
         //initialization
         for(i=0;i<n/p;i++)  {
-            printf("setting %d in n\n", i+(n/p*id));
+            //printf("setting %d in n\n", i+(n/p*id));
             prev[i+k] = f(i+(n/p*id),n);
         }
         
