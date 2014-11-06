@@ -68,7 +68,11 @@ int main(int argc, char **argv) {
         for(i=0;i<n;i++) printf("%f ",prev[i]);
         printf("\n");
         
+        if (id == 0)
         cur[0] = f(0,n); cur[n-1] = f(n-1,n);
+        
+        //printf checking something DEBUG DELETE LATER
+        printf("%d %d\n",cur[0].cur[n-1]);
         while (t < m) {
             for ( i=1 ; i < n-1 ; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
@@ -107,7 +111,7 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
-        for(i=0;i<block_size-1;i++) printf("%f ",prev[i]);
+        for(i=k;i<block_size;i++) printf("%f ",prev[i]);
         printf("\n");
 
         
