@@ -133,29 +133,35 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
-
+        
         
         if (id == 0) cur[k] = f(0,n);
         if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         while (t < m) {
             /*printf("Before swap\n");
-            for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-            printf("\n");*/
+             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+             printf("\n");*/
             exchangeGhostElements(p, id, prev, block_size, k);
             /*printf("after swap\n");
-            //printf checking something DEBUG DELETE LATER
-            for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-            printf("\n");*/
-            for ( i=k+1; i < block_size-k; i++ ) {
-                cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+             //printf checking something DEBUG DELETE LATER
+             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+             printf("\n");*/
+            if (id == 0)
+                for ( i=k+1; i < block_size-k; i++ ) {
+                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                }
+            else{
+                for ( i=k; i < block_size-k; i++ ) {
+                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                }
             }
             temp = prev; prev = cur;  cur  = temp; t++;
         }
         /*
-        printf("after swap\n");
-        //printf checking something DEBUG DELETE LATER
-        for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-        printf("\n");*/
+         printf("after swap\n");
+         //printf checking something DEBUG DELETE LATER
+         for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+         printf("\n");*/
         
         //printf checking something DEBUG DELETE LATER
         printf("Ending\n");
