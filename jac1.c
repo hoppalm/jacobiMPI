@@ -92,9 +92,9 @@ int main(int argc, char **argv) {
         if (id == 0) {
             rightSendingBuffer[0] = id;
             
-            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 1, MPI_COMM_WORLD);
+            MPI_Send((double *)rightSendingBuffer, 1, MPI_DOUBLE, myright, 1, MPI_COMM_WORLD);
             
-            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 2, MPI_COMM_WORLD, &status);
+            MPI_Recv((double *)buffer, 1, MPI_DOUBLE, myright, 0, MPI_COMM_WORLD, &status);
             
             //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
             
@@ -110,9 +110,9 @@ int main(int argc, char **argv) {
         else if(id == p-1){
             leftSendingBuffer[0] = id;
             
-            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 1, MPI_COMM_WORLD);
+            MPI_Send((double *)leftSendingBuffer, 1, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
             
-            MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD, &status);
+            MPI_Recv((double *)buffer, 1, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
             
             printf("%d int recieved from left", buffer[0]);
             
@@ -123,15 +123,15 @@ int main(int argc, char **argv) {
             leftSendingBuffer[0] = id;
             rightSendingBuffer[0] = id;
             
-            MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 1, MPI_COMM_WORLD, &status);
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
             
-            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD);
+            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myright, id, MPI_COMM_WORLD);
             
             printf("%d int recieved from left", buffer[0]);
             
-            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 3, MPI_COMM_WORLD);
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
             
-            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 4, MPI_COMM_WORLD, &status);
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
             
             
             printf("%d int recieved from right", buffer[0]);
