@@ -89,11 +89,13 @@ int main(int argc, char **argv) {
         double rightSendingBuffer[k];
         double buffer[k];
         
+        for (i = 0;i<block_size; i++){
+            prev[0] = 0;
+        }
         //initialization
         for(i=0;i<n/p;i++)  {
             printf("setting %d in n\n", i+(n/p*id));
             prev[i+k] = f(i+(n/p),n);
-            
         }
         
         //printf checking something DEBUG DELETE LATER
