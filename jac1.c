@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
-        for(i=0;i<block_size;i++) printf("%f ",prev[i]);
+        for(i=0;i<block_size-1;i++) printf("%f ",prev[i]);
         printf("\n");
 
         
