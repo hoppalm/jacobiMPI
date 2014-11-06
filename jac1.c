@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
                     cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
                 }
             else{
-                for ( i=k; i < block_size-k; i++ ) {
+                for ( i=k; i < block_size-k-1; i++ ) {
                     cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
                 }
             }
