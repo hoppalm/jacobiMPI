@@ -124,8 +124,9 @@ int main(int argc, char **argv) {
     }
     else {
         for (i = 0;i<block_size; i++){
-            prev[0] = 0;
+            prev[i] = 0;
         }
+        
         //initialization
         for(i=0;i<n/p;i++)  {
             printf("setting %d in n\n", i+(n/p*id));
