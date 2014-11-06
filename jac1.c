@@ -43,16 +43,16 @@ int main(int argc, char **argv) {
     prev  = (double *) malloc( sizeof(double) * block_size);
     cur   = (double *) malloc( sizeof(double) * block_size);
     
-    if ( prev == NULL || cur == NULL ) {
-        printf("[ERROR] : Failed to allocate memory.\n");
-        goto EXIT;
-    }
-    
     int lastGhostIndex = block_size-k;
     int lastElementIndex = block_size-(2*k);
     int myleft = id - 1;
     int myright = id + 1;
     const int last = p - 1;
+    
+    if ( prev == NULL || cur == NULL ) {
+        printf("[ERROR] : Failed to allocate memory.\n");
+        goto EXIT;
+    }
     
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
