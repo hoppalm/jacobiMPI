@@ -150,8 +150,13 @@ int main(int argc, char **argv) {
                 for ( i=k+1; i < block_size-k; i++ ) {
                     cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
                 }
-            else{
+            else if (id == p-1){
                 for ( i=k; i < block_size-k-1; i++ ) {
+                    cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                }
+            }
+            else {
+                for ( i=k; i < block_size-k; i++ ) {
                     cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
                 }
             }
