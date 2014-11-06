@@ -89,6 +89,14 @@ int main(int argc, char **argv) {
         double rightSendingBuffer[k];
         double buffer[k];
         
+        
+        printf("Process: %d\n", id);
+        for(i = (id*(n/p)); i < (id*(n/p))+block_size-2; i++) {
+            prev[i-(id*(n/p))] = f(i,n);
+            printf("%f ", prev[i-(id*(n/p))]);
+        } printf("\n");
+        
+        /*
         for (i = 0;i<block_size; i++){
             prev[0] = 0;
         }
@@ -102,6 +110,7 @@ int main(int argc, char **argv) {
         for(i=0+k;i<block_size-k;i++) printf("%f ",prev[i]);
         printf("\n");
 
+        */
         
         if (id == 0) {
             rightSendingBuffer[0] = id;
