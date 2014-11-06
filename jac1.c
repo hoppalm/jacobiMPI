@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
              
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
-            printf("%d int recieved from right", buffer[0]);
+            printf("%d int recieved from right", *buffer[0]);
             
             printf("first processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
             
             MPI_Recv((double *)buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
             
-            printf("%d int recieved from left", buffer[0]);
+            printf("%d int recieved from left", *buffer[0]);
             
             printf("last  processor left processor: %d right processor: %d\n", myleft, myright);
         }
@@ -124,11 +124,11 @@ int main(int argc, char **argv) {
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
             
-            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
             
             printf("%d int recieved from left", buffer[0]);
             
-            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
+            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
             
