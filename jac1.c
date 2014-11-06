@@ -96,8 +96,6 @@ int main(int argc, char **argv) {
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 2, MPI_COMM_WORLD, &status);
             
-
-            
             //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
             
             /*MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
@@ -105,8 +103,9 @@ int main(int argc, char **argv) {
             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
             
             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
+            printf("%d int recieved from right", buffer[0]);
             
-            printf("first processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
+            printf("first processor left processor: %d right processor: %d\n", myleft, myright);
         }
         else if(id == p-1){
             if(id%2 == 0){
@@ -116,7 +115,9 @@ int main(int argc, char **argv) {
                 
                 MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD, &status);
                 
-                printf("last even processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
+                printf("%d int recieved from left", buffer[0]);
+                
+                printf("last even processor left processor: %d right processor: %d\n", myleft, myright);
             }
             else{
                 leftSendingBuffer[0] = id;
@@ -125,7 +126,9 @@ int main(int argc, char **argv) {
                 
                 MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD);
                 
-                printf("last odd processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
+                printf("%d int recieved from left", buffer[0]);
+                
+                printf("last odd processor left processor: %d right processor: %d\n", myleft, myright);
             }
         }
         else if(id%2 == 0){
@@ -136,11 +139,15 @@ int main(int argc, char **argv) {
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD, &status);
             
+            printf("%d int recieved from left", buffer[0]);
+            
             MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 3, MPI_COMM_WORLD);
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 4, MPI_COMM_WORLD, &status);
             
-            printf("even processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
+            printf("%d int recieved from right", buffer[0]);
+            
+            printf("even processor left processor: %d right processor: %d\n", myleft, myright);
         }
         
         else{
@@ -151,9 +158,13 @@ int main(int argc, char **argv) {
             
             MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD);
             
+            printf("%d int recieved from left", buffer[0]);
+            
             MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 3, MPI_COMM_WORLD, &status);
             
             MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 4, MPI_COMM_WORLD);
+            
+            printf("%d int recieved from right", buffer[0]);
             
             printf("odd processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
