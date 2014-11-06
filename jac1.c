@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     int lastElementIndex = block_size-(2*k);
     int myleft = id - 1;
     int myright = id + 1;
-    int last = p - 1;
+    const int last = p - 1;
     
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
