@@ -92,8 +92,11 @@ int main(int argc, char **argv) {
         leftSendingBuffer[0] = id*2;
 
         if (id == 0) {
-            leftSendingBuffer[0] = id;
-            //MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
+            rightSendingBuffer[0] = id;
+            
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 1, MPI_COMM_WORLD, &status);
+            
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 2, MPI_COMM_WORLD);
             
             //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
             
@@ -107,28 +110,31 @@ int main(int argc, char **argv) {
         }
         else if(id%2 == 0){
             leftSendingBuffer[0] = id;
-            //MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
+            rightSendingBuffer[0] = id;
             
-            //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
+            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 1, MPI_COMM_WORLD);
             
-            /*MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD, &status);
+            
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 3, MPI_COMM_WORLD);
+            
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 4, MPI_COMM_WORLD, &status);
+            
             printf("even processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
+        
         else{
             leftSendingBuffer[0] = id;
-            //MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
+            rightSendingBuffer[0] = id;
             
-            //MPI_Recv( (int *)A00, b*b, MPI_INT, 0, 2, MPI_COMM_WORLD, &status);
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 1, MPI_COMM_WORLD, &status);
             
-            /*MPI_Send( (int *)A01, b*b, MPI_INT, 0, 1, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);
-             
-             MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
+            MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD);
+            
+            MPI_Recv(buffer, 1, MPI_DOUBLE, myright, 3, MPI_COMM_WORLD, &status);
+            
+            MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, myright, 4, MPI_COMM_WORLD);
+            
             printf("odd processor\tleft processor: %d\tright processor: %d\n", myleft, myright);
         }
     }
