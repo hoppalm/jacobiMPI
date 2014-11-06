@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
         cur[0] = f(0,n); cur[n-1] = f(n-1,n);
         
         //printf checking something DEBUG DELETE LATER
-        printf("%d %d\n",cur[0].cur[n-1]);
+        printf("%d %d\n",cur[0],cur[n-1]);
         while (t < m) {
             for ( i=1 ; i < n-1 ; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
