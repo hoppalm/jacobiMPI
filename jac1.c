@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
              MPI_Send(buffer, 10, MPI_INT, 1, 123, MPI_COMM_WORLD);*/
             //printf("%d int recieved from right", *buffer[0]);
             
-            printf("first processor left processor: %d right processor: %d\n", myleft, myright);
+            printf("first processor left processor: %d right processor: %d\n", id-1, id+1);
         }
         else if(id == p-1){
             leftSendingBuffer[0] = id;
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
             
             //printf("%d int recieved from left", *buffer[0]);
             
-            printf("last  processor left processor: %d right processor: %d\n", myleft, myright);
+            printf("last  processor left processor: %d right processor: %d\n", id-1, id+1);
         }
         
         else{
@@ -137,7 +137,7 @@ int main(int argc, char **argv) {
             
             //printf("%d int recieved from right", buffer[0]);
             
-            printf("left processor: %d right processor: %d\n", myleft, myright);
+            printf("left processor: %d right processor: %d\n", id-1, id+1);
         }
     }
     
