@@ -22,6 +22,11 @@ int main(int argc, char **argv) {
     MPI_Init( &argc, &argv );
     MPI_Comm_rank( MPI_COMM_WORLD, &id );
     MPI_Comm_size( MPI_COMM_WORLD, &p );
+    
+    int myleft = id - 1;
+    int myright = id + 1;
+    const int last = p - 1;
+    
     if (argc < 4) {
         fprintf (stderr, "need problem size, #iterations and buffer size\n");
         goto EXIT;
@@ -42,12 +47,6 @@ int main(int argc, char **argv) {
     // Memory allocation for data array.
     prev  = (double *) malloc( sizeof(double) * block_size);
     cur   = (double *) malloc( sizeof(double) * block_size);
-    
-    int lastGhostIndex = block_size-k;
-    int lastElementIndex = block_size-(2*k);
-    int myleft = id - 1;
-    int myright = id + 1;
-    const int last = p - 1;
     
     if ( prev == NULL || cur == NULL ) {
         printf("[ERROR] : Failed to allocate memory.\n");
@@ -95,8 +94,8 @@ int main(int argc, char **argv) {
             //swapping ghost cells
             switch(id){
                 case 0:
-                    MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
-                    MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                    MPI_Send(prev+(block_size-(2*k)), k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                    MPI_Recv(prev+(block_size-k), k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
                     for (j = k-1; j >= 0 && t < m; j--){
                         for ( i=k+1; i < block_size-k+j; i++ ) {
                             cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
@@ -118,11 +117,11 @@ int main(int argc, char **argv) {
                     else {
                         MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
                         
-                        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                        MPI_Send(prev+(block_size-(2*k)), k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
                         
                         MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
                         
-                        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                        MPI_Recv(prev+(block_size-k), k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
                         
                         for (j = k-1; j >= 0 && t < m; j--){
                             for ( i=k-j; i < block_size-k+j; i++ ) {
