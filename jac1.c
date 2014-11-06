@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
                         temp = prev; prev = cur;  cur  = temp; t++;
                     }
                     break;
-                case p-1:
+                case (p-1):
                     MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
                     MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
                     for (j = k-1; j >= 0 && t < m; j--){
