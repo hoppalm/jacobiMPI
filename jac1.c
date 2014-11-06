@@ -22,35 +22,35 @@ void exchangeGhostElements(int p, int id, double *prev, int block_size, int k){
     
     MPI_Status status;
     
-    int lastElementIndex = block_size-k-1;
+    int lastGhostIndex = block_size-k-1;
+    int lastElementIndex = block_size-(2*k);
     
     
     if (id == 0) {
         
-        //MPI_Send(prev+k+, 1, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
+        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, 1, 1, MPI_COMM_WORLD);
         
-        //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, 1, 0, MPI_COMM_WORLD, &status);
         
     }
     else if(id == p-1){
         
-        //MPI_Send((double *)leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
+        MPI_Send(prev+k, k, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
         
-        //MPI_Recv((double *)buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
+        MPI_Recv(prev, k, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
         
-        //printf("%d int recieved from left", *buffer[0]);
         
     }
     
     else{
         
-        //MPI_Recv(buffer, 1, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
+        MPI_Recv(prev, k, MPI_DOUBLE, id-1, id, MPI_COMM_WORLD, &status);
         
-        //MPI_Send(rightSendingBuffer, 1, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
+        MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, id+1, id+1, MPI_COMM_WORLD);
         
-        //MPI_Send(leftSendingBuffer, 1, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
+        MPI_Send(prev+k, k, MPI_DOUBLE, id-1, id-1, MPI_COMM_WORLD);
         
-        //MPI_Recv(buffer, 1, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
+        MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, id+1, id, MPI_COMM_WORLD, &status);
     }
 }
 
@@ -133,13 +133,13 @@ int main(int argc, char **argv) {
         }
         
         //printf checking something DEBUG DELETE LATER
-        for(i=k;i<block_size;i++) printf("%f ",prev[i]);
+        for(i=0;i<block_size;i++) printf("%f ",prev[i]);
         printf("\n");
         
         if (id == 0) cur[k] = f(0,n);
         if (id == p-1) cur[block_size-k-1] = f(n-1,n);
         
-        exchangeGhostElements(p, id, prev, block_size, k);
+        //exchangeGhostElements(p, id, prev, block_size, k);
     }
     
     
