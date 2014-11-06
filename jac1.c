@@ -122,6 +122,9 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     else {
+        if (p==0) {
+            startwtime = MPI_Wtime();
+        }
         for (i = 0;i<block_size; i++){
             prev[i] = 0;
         }
@@ -184,5 +187,10 @@ int main(int argc, char **argv) {
     
 EXIT:
     MPI_Finalize();
+    if (p >1){
+        endwtime = MPI_Wtime();
+        time = endwtime-startwtime;
+        printf("MPI process complete, time: %f\n", time);
+    }
     return 0;
 }
