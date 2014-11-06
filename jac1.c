@@ -180,8 +180,7 @@ int main(int argc, char **argv) {
          printf("\n");*/
         
         //printf checking something DEBUG DELETE LATER
-        
-        
+        goto EXIT;
     }
     
     
