@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
         
         //initialization
         for(i=0;i<n/p;i++)  {
-            printf("setting %d in n\n", i+(n/p);
+            printf("setting %d in n\n", i+(n/p));
             prev[i+k] = f(i+(n/p),n);
             
         }
