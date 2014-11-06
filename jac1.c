@@ -114,8 +114,6 @@ int main(int argc, char **argv) {
             
             MPI_Recv(buffer, 1, MPI_DOUBLE, myleft, 2, MPI_COMM_WORLD, &status);
             
-
-            
             printf("%d int recieved from left", buffer[0]);
             
             printf("last  processor left processor: %d right processor: %d\n", myleft, myright);
