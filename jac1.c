@@ -143,10 +143,10 @@ int main(int argc, char **argv) {
             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
             printf("\n");
             exchangeGhostElements(p, id, prev, block_size, k);
-            /*printf("after swap\n");
+            printf("after swap\n");
             //printf checking something DEBUG DELETE LATER
             for(i=0;i<block_size;i++) printf("%f ",prev[i]);
-            printf("\n");*/
+            printf("\n");
             for ( i=1; i < block_size-1; i++ ) {
                 cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
             }
