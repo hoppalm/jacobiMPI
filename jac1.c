@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
     int lastElementIndex = block_size-(2*k);
     int myleft = id - 1;
     int myright = id + 1;
+    int last = p - 1;
     
     MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
@@ -103,7 +104,7 @@ int main(int argc, char **argv) {
                         temp = prev; prev = cur;  cur  = temp; t++;
                     }
                     break;
-                case (p-1):
+                case last:
                     MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
                     MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
                     for (j = k-1; j >= 0 && t < m; j--){
