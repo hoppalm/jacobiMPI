@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
         goto EXIT;
     }
     
-    MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
+    //MPI_Barrier(MPI_COMM_WORLD);/* make sure everyone is active */
     
     
     printf("\nnumber of processers %d\tcurrent id %d\tblock_size %d\n", p,id,block_size);
