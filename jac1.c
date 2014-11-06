@@ -92,42 +92,43 @@ int main(int argc, char **argv) {
         while (t < m) {
             
             //swapping ghost cells
-            if (id == 0) {
-                MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
-                MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
-            }
-            else if(id == p-1){
-                MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
-                MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
-            }
-            
-            else{
-                MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
-                
-                MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
-                
-                MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
-                
-                MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
-            }
-            
-            for (j = k-1; j >= 0 && t < m; j--){
-                if (id == 0){
-                    for ( i=k+1; i < block_size-k+j; i++ ) {
-                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+            switch(id){
+                case 0:
+                    MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                    MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                    for (j = k-1; j >= 0 && t < m; j--){
+                        for ( i=k+1; i < block_size-k+j; i++ ) {
+                            cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                        }
+                        temp = prev; prev = cur;  cur  = temp; t++;
                     }
-                }
-                else if (id == p-1){
-                    for ( i=k-j; i < block_size-k-1; i++ ) {
-                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                    break;
+                case p-1:
+                    MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
+                    MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
+                    for (j = k-1; j >= 0 && t < m; j--){
+                        for ( i=k-j; i < block_size-k-1; i++ ) {
+                            cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                        }
+                        temp = prev; prev = cur;  cur  = temp; t++;
                     }
-                }
-                else {
-                    for ( i=k-j; i < block_size-k+j; i++ ) {
-                        cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                    break;
+                default:
+                    MPI_Recv(prev, k, MPI_DOUBLE, myleft, id, MPI_COMM_WORLD, &status);
+                    
+                    MPI_Send(prev+lastElementIndex, k, MPI_DOUBLE, myright, myright, MPI_COMM_WORLD);
+                    
+                    MPI_Send(prev+k, k, MPI_DOUBLE, myleft, myleft, MPI_COMM_WORLD);
+                    
+                    MPI_Recv(prev+lastGhostIndex, k, MPI_DOUBLE, myright, id, MPI_COMM_WORLD, &status);
+                    
+                    for (j = k-1; j >= 0 && t < m; j--){
+                        for ( i=k-j; i < block_size-k+j; i++ ) {
+                            cur[i] = (prev[i-1]+prev[i]+prev[i+1])/3;
+                        }
+                        temp = prev; prev = cur;  cur  = temp; t++;
                     }
-                }
-                temp = prev; prev = cur;  cur  = temp; t++;
+                    break;
             }
             
         }
