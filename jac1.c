@@ -22,7 +22,7 @@ void exchangeGhostElements(int p, int id, double *prev, int block_size, int k){
     
     MPI_Status status;
     
-    int lastGhostIndex = block_size-k-1;
+    int lastGhostIndex = block_size-k;
     int lastElementIndex = block_size-(2*k);
     
     
