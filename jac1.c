@@ -144,10 +144,13 @@ int main(int argc, char **argv) {
             }
             printf("\n");
         }
-        
+	        
         endwtime = MPI_Wtime();
         time = endwtime-startwtime;
-        if(id == 0){
+
+        MPI_Barrier(MPI_COMM_WORLD);
+	
+	if(id == 0){
             printf("MPI process complete, time: %f\n", time);
         }
         goto EXIT;
