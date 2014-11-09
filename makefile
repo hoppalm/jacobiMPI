@@ -1,17 +1,15 @@
-if [ ! -f /usr/lib64/openmpi/bin/mpicc ]; then
-echo "File not found!"
-else
-echo "Found"
-fi
+CC = notSet
+EXES = nothing
+FILE_EXISTS=$(shell [ -e /usr/lib64/openmpi/bin/mpicc ] && echo 1 || echo 0 )
+ifeq ($(FILE_EXISTS), 1)
+	CC = mpicc
+	EXES = jacobi-dept
+else    
+        CC = cc
+        EXES = jacobi-cray
+endif
 
-CC  = mpicc
-
-EXES = jac1
-
-all: jac1
-
-jac1: jac1.c
-	$(CC) -o jac1 jac1.c -O3
-
+$(EXES): jac1.c
+	$(CC) -o $(EXES) jac1.c -O3
 clean:
 	rm -f $(EXES)
